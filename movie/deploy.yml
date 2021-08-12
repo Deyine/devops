@@ -8,3 +8,5 @@
       dest: /var/www/laravel-movies-example
       clone: yes
       update: yes
+  - name: restart apache2
+    service: name=apache2 enabled=yes state=restarted
