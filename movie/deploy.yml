@@ -6,5 +6,4 @@
     git:
       repo: https://github.com/Deyine/devops.git
       dest: /var/www/laravel-movies-example
-      clone: yes
       update: yes
