@@ -1,0 +1,18 @@
+---
+- name: Install LAMP
+  hosts: gestion-ticket
+  remote_user: root
+  tasks:
+  - name: Update Linux
+    raw: apt update
+  - name: Install latest version of Apache
+    apt: name=apache2 update_cache=yes state=latest
+  - name: Install Rsync
+    apt: name=rsync update_cache=yes state=latest
+  - name: Copy source code
+    synchronize:
+      src: /Users/djiddou/Documents/Developments/kossam/club-tiossane/app/
+      dest: /var/www
+
+
+      host2 ansible_host=51.158.115.243 ansible_ssh_port=22 ansible_python_interpreter=/usr/bin/python3

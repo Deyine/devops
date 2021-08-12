@@ -1,0 +1,63 @@
+---
+- name: Install LAMP
+  hosts: gestion-ticket
+  tasks:
+  # - name: Update Linux
+  #   raw: apt update
+  # - name: Install tout ce qui est necessaire
+  #   apt: name={{ item }} update_cache=yes state=latest
+  #   with_items:
+  #     - git
+  #     - wget
+  # - name: Install latest version of Apache
+  #   apt: name=apache2 update_cache=yes state=latest
+  # - name: Cloner l'application
+  #   git:
+  #     repo: https://{{ username | urlencode }}:{{ password | urlencode }}@github.com/NextVersionHub/leuk-webapp.git
+  #     dest: /var/www/html/leuk-webapp
+  #     clone: yes
+  #     update: yes
+  #     accept_hostkey: yes
+  # - name: Add Mysql Repo
+  #   command: wget https://dev.mysql.com/get/mysql-apt-config_0.8.13-1_all.deb
+  #   args:
+  #     chdir: /tmp
+  # - name: Update Linux
+  #   raw: apt update
+  # - name: Install Mysql
+  #   apt: name={{ item }} update_cache=yes state=latest
+  #   with_items:
+  #     - mysql-server
+  #     - mysql-client
+  #     - python3-pip
+  #     - libmysqlclient-dev
+  #     - python3-dev
+  #     - python3-mysqldb
+  #    - python-mysqldb
+
+  - name: Update mysql root password for all root accounts
+    mysql_user: 
+      name: 'root' 
+      host: '{{ item }}'
+      password: 'passera123'
+      login_user: 'root'
+      login_password: 'passera123'
+    with_items:
+      - "{{ ansible_hostname }}"
+      - 127.0.0.1
+      - ::1
+      - localhost
+  - name: Mysql configuration
+    template: src=configurations/mysql.cnf dest=/etc/mysql/mysql.cnf owner=root mode=0600
+
+  - name: Create root user
+    shell: mysql -u root -ppassera123 -e 'CREATE USER "root"@"%" IDENTIFIED BY "passera123";'
+  - name: Grant privilege
+    shell: mysql -u root -ppassera123 -e 'GRANT ALL PRIVILEGES ON *.* TO "root"@"%";'
+  - name: Flush Privileges
+    shell: mysql -u root -ppassera123 -e 'FLUSH PRIVILEGES'
+
+  - name: restart mysql
+    service: name=mysql enabled=yes state=restarted
+  - name: restart apache2
+    service: name=apache2 enabled=yes state=restarted

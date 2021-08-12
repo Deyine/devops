@@ -1,0 +1,2 @@
+[gestion-ticket]
+host1 ansible_host=163.172.178.160 ansible_ssh_port=22 ansible_python_interpreter=/usr/bin/python3 ansible_ssh_user=root
