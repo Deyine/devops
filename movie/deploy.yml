@@ -4,7 +4,7 @@
   tasks:
   - name: Cloner l'application
     git:
-      repo: https://github.com/Deyine/devops.git
+      repo: https://github.com/Deyine/laravel-movies-example.git
       dest: /var/www/laravel-movies-example
       clone: yes
       update: yes
