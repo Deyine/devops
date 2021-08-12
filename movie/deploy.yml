@@ -1,0 +1,10 @@
+---
+- name: Deploy Movie
+  hosts: gestion-ticket
+  tasks:
+  - name: Cloner l'application
+    git:
+      repo: https://github.com/Deyine/devops.git
+      dest: /var/www/laravel-movies-example
+      clone: yes
+      update: yes
